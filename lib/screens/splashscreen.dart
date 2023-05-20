@@ -35,7 +35,7 @@ class SplashScreenState extends State<SplashScreen> {
         Container(
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('assets/images/splash.jpg'),
+                    image: AssetImage('assets/images/splash.png'),
                     fit: BoxFit.cover))),
         const Padding(
           padding: EdgeInsets.fromLTRB(0, 50, 0, 20),
@@ -80,7 +80,7 @@ class SplashScreenState extends State<SplashScreen> {
             var jsondata = jsonDecode(response.body);
             user = User.fromJson(jsondata['data']);
             Timer(
-                const Duration(seconds: 3),
+                const Duration(seconds: 20),
                 () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -95,7 +95,7 @@ class SplashScreenState extends State<SplashScreen> {
                 password: "na",
                 otp: "na");
             Timer(
-                const Duration(seconds: 50),
+                const Duration(seconds: 3),
                 () => Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
@@ -117,7 +117,7 @@ class SplashScreenState extends State<SplashScreen> {
           password: "na",
           otp: "na");
       Timer(
-          const Duration(seconds: 50),
+          const Duration(seconds: 3),
           () => Navigator.pushReplacement(context,
               MaterialPageRoute(builder: (content) => MainScreen(user: user))));
     }
