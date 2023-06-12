@@ -1,12 +1,12 @@
 import 'dart:convert';
 
+import 'package:exbuyapp/mainmenu.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
-import 'package:exbuy/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../config.dart';
-import 'mainscreen.dart';
+import '../models/user.dart';
+import '../myconfig.dart';
 import 'registrationscreen.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -166,7 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
     String _email = _emailEditingController.text;
     String _pass = _passEditingController.text;
-    http.post(Uri.parse("${Config.SERVER}/php/login_user.php"),
+    http.post(Uri.parse("${MyConfig().SERVER}/php/login_user.php"),
         body: {"email": _email, "password": _pass}).then((response) {
       var jsonResponse = json.decode(response.body);
       if (response.statusCode == 200 && jsonResponse['status'] == "success") {
@@ -174,7 +174,7 @@ class _LoginScreenState extends State<LoginScreen> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (content) => MainScreen(
+                builder: (content) => MainMenu(
                       user: user,
                     )));
       } else {
@@ -198,7 +198,7 @@ class _LoginScreenState extends State<LoginScreen> {
     Navigator.push(
         context,
         MaterialPageRoute(
-            builder: (content) => MainScreen(
+            builder: (content) => MainMenu(
                   user: user,
                 )));
   }

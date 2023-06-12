@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'package:fluttertoast/fluttertoast.dart';
 
-import '../../config.dart';
+import '../myconfig.dart';
 import 'loginscreen.dart';
 
 class RegistrationScreen extends StatefulWidget {
@@ -318,7 +318,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   void _registerUser(String name, String email, String phone, String pass) {
     try {
-      http.post(Uri.parse("${Config.SERVER}/php/register_user.php"), body: {
+      http.post(Uri.parse("${MyConfig().SERVER}/php/register_user.php"), body: {
         "name": name,
         "email": email,
         "phone": phone,
