@@ -7,15 +7,13 @@ if (!isset($_POST)) {
 
 include_once("dbconnect.php");
 
-$name = $_POST['name'];
-$email = $_POST['email'];
-$phone = $_POST['phone'];
-$password = sha1($_POST['password']);
-$otp = rand(10000,99999);
+$userid = $_POST['userid'];
+$catchid = $_POST['catchid'];
 
-$sqlinsert = "INSERT INTO `tbl_users`(`user_email`, `user_name`, `user_phone`, `user_password`, `user_otp`) VALUES ('$email','$name','$phone','$password','$otp')";
 
-if ($conn->query($sqlinsert) === TRUE) {
+$sqldelete = "DELETE FROM `tbl_catches` WHERE `catch_id` = '$catchid'";
+
+if ($conn->query($sqldelete) === TRUE) {
 	$response = array('status' => 'success', 'data' => null);
     sendJsonResponse($response);
 }else{

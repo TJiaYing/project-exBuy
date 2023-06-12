@@ -7,15 +7,17 @@ if (!isset($_POST)) {
 
 include_once("dbconnect.php");
 
-$name = $_POST['name'];
-$email = $_POST['email'];
-$phone = $_POST['phone'];
-$password = sha1($_POST['password']);
-$otp = rand(10000,99999);
+$catchid = $_POST['catchid'];
+$catch_name = $_POST['catchname'];
+$catch_desc = addslashes($_POST['catchdesc']);
+$catch_price = $_POST['catchprice'];
+$catch_qty = $_POST['catchqty'];
+$catch_type = $_POST['type'];
 
-$sqlinsert = "INSERT INTO `tbl_users`(`user_email`, `user_name`, `user_phone`, `user_password`, `user_otp`) VALUES ('$email','$name','$phone','$password','$otp')";
 
-if ($conn->query($sqlinsert) === TRUE) {
+$sqlupdate = "UPDATE `tbl_catches` SET `catch_name`='$catch_name',`catch_type`='$catch_type',`catch_desc`='$catch_desc',`catch_price`='$catch_price',`catch_qty`='$catch_qty' WHERE `catch_id` = '$catchid'";
+
+if ($conn->query($sqlupdate) === TRUE) {
 	$response = array('status' => 'success', 'data' => null);
     sendJsonResponse($response);
 }else{
