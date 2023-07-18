@@ -7,13 +7,11 @@ if (!isset($_POST)) {
 
 include_once("dbconnect.php");
 
-$userid = $_POST['userid'];
-$catchid = $_POST['catchid'];
+$cartid = $_POST['cartid'];
 
+$sqldeletecart = "DELETE FROM `tbl_carts` WHERE `cart_id` = '$cartid'";
 
-$sqldelete = "DELETE FROM `tbl_catches` WHERE `catch_id` = '$catchid'";
-
-if ($conn->query($sqldelete) === TRUE) {
+if ($conn->query($sqldeletecart) === TRUE) {
 	$response = array('status' => 'success', 'data' => null);
     sendJsonResponse($response);
 }else{

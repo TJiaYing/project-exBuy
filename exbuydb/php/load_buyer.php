@@ -7,13 +7,13 @@ if (!isset($_POST)) {
 
 include_once("dbconnect.php");
 
-if (isset($_POST['sellerid'])){
-	$sellerid = $_POST['sellerid'];	
-	$sqlcart = "SELECT * FROM `tbl_orders` WHERE seller_id = '$sellerid'";
+if (isset($_POST['buyerid'])){
+	$buyerid = $_POST['buyerid'];	
+	$sqlorder = "SELECT * FROM `tbl_orders` WHERE buyer_id = '$buyerid'";
 }
 //`order_id`, `order_bill`, `order_paid`, `buyer_id`, `seller_id`, `order_date`, `order_status`
 
-$result = $conn->query($sqlcart);
+$result = $conn->query($sqlorder);
 if ($result->num_rows > 0) {
     $oderitems["orders"] = array();
 	while ($row = $result->fetch_assoc()) {

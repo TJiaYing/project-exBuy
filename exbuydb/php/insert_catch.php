@@ -19,7 +19,6 @@ $state = $_POST['state'];
 $locality = $_POST['locality'];
 $image = $_POST['image'];
 $status = "New";
-
 $sqlinsert = "INSERT INTO `tbl_catches`(`user_id`,`catch_name`, `catch_desc`, `catch_type`, `catch_price`, `catch_qty`, `catch_lat`, `catch_long`, `catch_state`, `catch_locality`, `catch_status`) VALUES ('$userid','$catch_name','$catch_desc','$catch_type','$catch_price','$catch_qty','$latitude','$longitude','$state','$locality','New')";
 
 if ($conn->query($sqlinsert) === TRUE) {

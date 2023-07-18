@@ -31,11 +31,10 @@ foreach ($data as $key => $value) {
     }
 }
  
- 
-$signed= hash_hmac('sha256', $signing, 'S-LkXt4sM81EFiI8aoo8gyLw');
+$signed= hash_hmac('sha256', $signing, 'S-oNqPle-9aOTFiEnw_WTwiA');
 if ($signed === $data['x_signature']) {
     if ($paidstatus == "Success"){ //payment success
-        $sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$userid' ORDER BY 'seller_id'";
+         $sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$userid' ORDER BY seller_id ASC";
         $result = $conn->query($sqlcart);
         $seller = "";
         $singleorder = 0;
@@ -58,25 +57,16 @@ if ($signed === $data['x_signature']) {
                     $sqlorder ="INSERT INTO `tbl_orders`( `order_bill`, `order_paid`, `buyer_id`, `seller_id`, `order_status`) VALUES ('$receiptid','$singleorder','$userid','$seller','New')";
                     $conn->query($sqlorder);
                     $seller = $seller_id;
-                    $singleorder = 0;
+                    $singleorder = $order_paid;
                 }
                 
                 if ($i == ($numofrows-1)){
-                     $singleorder = $singleorder + $order_paid; 
+                     $singleorder = $singleorder; 
                     $sqlorder ="INSERT INTO `tbl_orders`( `order_bill`, `order_paid`, `buyer_id`, `seller_id`, `order_status`) VALUES ('$receiptid','$singleorder','$userid','$seller','New')";
                     $conn->query($sqlorder);
                 }
                 $i++;
                 
-                
-                
-                
-                // if ($seller != $seller_id){
-                //      $singleorder =  $singleorder - $order_paid;
-                //      $sqlorder ="INSERT INTO `tbl_orders`( `order_bill`, `order_paid`, `buyer_id`, `seller_id`) VALUES ('$receiptid','$singleorder','$userid','$seller_id')";
-                //     $conn->query($sqlorder);
-                //     $seller = $seller_id;
-                // }
                 $sqlorderdetails = "INSERT INTO `tbl_orderdetails`(`order_bill`, `catch_id`, `orderdetail_qty`, `orderdetail_paid`, `buyer_id`, `seller_id`) VALUES ('$receiptid','$catchid','$orderqty','$order_paid','$userid','$seller_id')";
                 $conn->query($sqlorderdetails);
                 $sqlupdatecatchqty = "UPDATE `tbl_catches` SET `catch_qty`= (catch_qty - $orderqty) WHERE `catch_id` = '$catchid'";
@@ -86,41 +76,81 @@ if ($signed === $data['x_signature']) {
             $conn->query($sqldeletecart);
         }
         
-        echo "
-        <html><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-        <link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">
-        <body>
+        echo '
+<html>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="resit.css">
+    <body>
+        <div class="table-container">
         <center><h4>Receipt</h4></center>
-        <table class='w3-table w3-striped'>
-        <th>Item</th><th>Description</th>
-        <tr><td>Name</td><td>$name</td></tr>
-        <tr><td>Email</td><td>$email</td></tr>
-        <tr><td>Phone</td><td>$phone</td></tr>
-        <tr><td>Paid Amount</td><td>RM$amount</td></tr>
-        <tr><td>Paid Status</td><td class='w3-text-green'>$paidstatus</td></tr>
+        <table>
+            <tr class="table-header">
+                <th>Item</th>
+                <th>Description</th>
+            </tr>
+            <tr>
+                <td>Name</td>
+                <td>'.$name.'</td>
+            </tr>
+            <tr>
+                <td>Email</td>
+                <td>'.$email.'</td>
+            </tr>
+            <tr>
+                <td>Phone</td>
+                <td>'.$phone.'</td>
+            </tr>
+            <tr>
+                <td>Paid Amount</td>
+                <td>RM'.$amount.'</td>
+            </tr>
+            <tr>
+                <td>Paid Status</td>
+                <td class="paid-status">'.$paidstatus.'</td>
+            </tr>
         </table><br>
-        
-        </body>
-        </html>";
+        </div>
+    </body>
+</html>';
     }
     else 
     {
-         echo "
-        <html><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">
-        <link rel=\"stylesheet\" href=\"https://www.w3schools.com/w3css/4/w3.css\">
-        <body>
-        <center><h4>Receipt</h4></center>
-        <table class='w3-table w3-striped'>
-        <th>Item</th><th>Description</th>
-        <tr><td>Name</td><td>$name</td></tr>
-        <tr><td>Email</td><td>$email</td></tr>
-        <tr><td>Phone</td><td>$phone</td></tr>
-        <tr><td>Paid</td><td>RM $amount</td></tr>
-        <tr><td>Paid Status</td><td class='w3-text-red'>$paidstatus</td></tr>
-        </table><br>
-        
-        </body>
-        </html>";
+        echo '
+        <html>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <link rel="stylesheet" href="resit.css">
+            <body>
+                <div class="table-container">
+                <center><h4>Receipt</h4></center>
+                <table>
+                    <tr class="table-header">
+                        <th>Item</th>
+                        <th>Description</th>
+                    </tr>
+                    <tr>
+                        <td>Name</td>
+                        <td>'.$name.'</td>
+                    </tr>
+                    <tr>
+                        <td>Email</td>
+                        <td>'.$email.'</td>
+                    </tr>
+                    <tr>
+                        <td>Phone</td>
+                        <td>'.$phone.'</td>
+                    </tr>
+                    <tr>
+                        <td>Paid Amount</td>
+                        <td>RM'.$amount.'</td>
+                    </tr>
+                    <tr>
+                        <td>Paid Status</td>
+                        <td class="paid-status">'.$paidstatus.'</td>
+                    </tr>
+                </table><br>
+                </div>
+            </body>
+        </html>';        
     }
 }
 

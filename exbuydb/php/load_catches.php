@@ -24,14 +24,14 @@ if (isset($_POST['cartuserid'])){
 if (isset($_POST['userid'])){
 	$userid = $_POST['userid'];	
 	$sqlloadcatches = "SELECT * FROM `tbl_catches` WHERE user_id = '$userid'";
-    $sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$userid'";
-}if (isset($_POST['search'])){
+	$sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$userid'";
+}else if (isset($_POST['search'])){
 	$search = $_POST['search'];
 	$sqlloadcatches = "SELECT * FROM `tbl_catches` WHERE catch_name LIKE '%$search%'";
-    $sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$cartuserid'";
+	$sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$cartuserid'";
 }else{
 	$sqlloadcatches = "SELECT * FROM `tbl_catches`";
-    $sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$cartuserid'";
+	$sqlcart = "SELECT * FROM `tbl_carts` WHERE user_id = '$cartuserid'";
 }
 
 if (isset($sqlcart)){
@@ -48,12 +48,12 @@ if (isset($sqlcart)){
 }else{
 	$totalcart = 0;
 }
-
 $result = $conn->query($sqlloadcatches);
 $number_of_result = $result->num_rows;
 $number_of_page = ceil($number_of_result / $results_per_page);
 $sqlloadcatches = $sqlloadcatches . " LIMIT $page_first_result , $results_per_page";
 $result = $conn->query($sqlloadcatches);
+
 
 if ($result->num_rows > 0) {
     $catches["catches"] = array();

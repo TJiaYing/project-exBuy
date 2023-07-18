@@ -7,13 +7,14 @@ if (!isset($_POST)) {
 
 include_once("dbconnect.php");
 
-$userid = $_POST['userid'];
-$catchid = $_POST['catchid'];
+$orderid = $_POST['orderid'];
+$status = $_POST['status'];
+$lat = $_POST['lat'];
+$lng = $_POST['lng'];
 
+$sqlupdate = "UPDATE `tbl_orders` SET `order_status`='$status', `order_lng` = '$lng', `order_lat` = '$lat' WHERE order_id = '$orderid'";
 
-$sqldelete = "DELETE FROM `tbl_catches` WHERE `catch_id` = '$catchid'";
-
-if ($conn->query($sqldelete) === TRUE) {
+if ($conn->query($sqlupdate) === TRUE) {
 	$response = array('status' => 'success', 'data' => null);
     sendJsonResponse($response);
 }else{
