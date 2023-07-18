@@ -37,6 +37,7 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Your Cart"),
+        actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.clear))],
       ),
       body: Column(
         children: [
@@ -95,6 +96,7 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
                                                               .cartQty
                                                               .toString()) -
                                                       1;
+
                                                   double newprice =
                                                       double.parse(
                                                               cartList[index]
@@ -110,7 +112,7 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
                                               },
                                               icon: const Icon(Icons.remove)),
                                           Text(cartList[index]
-                                              .catchQty
+                                              .cartQty
                                               .toString()),
                                           IconButton(
                                             onPressed: () {
@@ -173,16 +175,9 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
                     ),
                     ElevatedButton(
                         onPressed: () async {
-                          await Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (content) => BillScreen(
-                                        user: widget.user,
-                                        totalprice: totalprice,
-                                      )));
-                          loadcart();
+                          cartDialog();
                         },
-                        child: Text("Check Out"))
+                        child: const Text("Check Out"))
                   ],
                 )),
           )
@@ -191,11 +186,73 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
     );
   }
 
+  void cartDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(Radius.circular(10.0))),
+          title: const Text(
+            "What item you want to barter with?",
+            style: TextStyle(),
+          ),
+          content: TextFormField(
+                        textInputAction: TextInputAction.next,
+                        validator: (val) => val!.isEmpty
+                            ? "Item description must be longer than 10"
+                            : null,
+                        onFieldSubmitted: (v) {},
+                        maxLines: 2,
+                        keyboardType: TextInputType.text,
+                        decoration: const InputDecoration(
+                            labelText: 'Item',
+                            alignLabelWithHint: true,
+                            labelStyle: TextStyle(),
+                            icon: Icon(
+                              Icons.description,
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(width: 2.0),
+                            ))),
+          actions: <Widget>[
+            TextButton(
+              child: const Text(
+                "Yes",
+                style: TextStyle(),
+              ),
+              onPressed: () {
+                Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (content) => BillScreen(
+                                        user: widget.user,
+                                        totalprice: totalprice,
+                                      )));
+                loadcart();
+                //registerUser();
+              },
+            ),
+            TextButton(
+              child: const Text(
+                "No",
+                style: TextStyle(),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void loadcart() {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/load_cart.php"), body: {
-      "userid": widget.user.id,
-    }).then((response) {
-      print(response.body);
+    http.post(Uri.parse("${MyConfig().SERVER}/php/load_cart.php"),
+        body: {
+          "userid": widget.user.id,
+        }).then((response) {
       // log(response.body);
       cartList.clear();
       if (response.statusCode == 200) {
@@ -212,8 +269,9 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
           for (var element in cartList) {
             totalprice =
                 totalprice + double.parse(element.cartPrice.toString());
+            //print(element.catchPrice);
           }
-          //print (catchList[0].cartName);
+          //print(catchList[0].catchName);
         } else {
           Navigator.of(context).pop();
         }
@@ -262,9 +320,10 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
   }
 
   void deleteCart(int index) {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_cart.php"), body: {
-      "cartid": cartList[index].cartId,
-    }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_cart.php"),
+        body: {
+          "cartid": cartList[index].cartId,
+        }).then((response) {
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         if (jsondata['status'] == 'success') {
@@ -283,11 +342,12 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
   }
 
   void updateCart(int index, int newqty, double newprice) {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/update_cart.php"), body: {
-      "cartid": cartList[index].cartId,
-      "newqty": newqty.toString(),
-      "newprice": newprice.toString()
-    }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/update_cart.php"),
+        body: {
+          "cartid": cartList[index].cartId,
+          "newqty": newqty.toString(),
+          "newprice": newprice.toString()
+        }).then((response) {
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         if (jsondata['status'] == 'success') {

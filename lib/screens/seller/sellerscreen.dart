@@ -9,6 +9,7 @@ import '../../models/user.dart';
 import '../../myconfig.dart';
 import 'editcatchscreen.dart';
 import 'newcatchscreen.dart';
+import 'sellerorderscreen.dart';
 
 // for fisherman screen
 
@@ -27,18 +28,16 @@ class _SellerScreenState extends State<SellerScreen> {
   late List<Widget> tabchildren;
   String maintitle = "Seller";
   List<Catch> catchList = <Catch>[];
-
+  String status = "Loading...";
   @override
   void initState() {
     super.initState();
     loadsellerCatches();
-    print("Seller");
   }
 
   @override
   void dispose() {
     super.dispose();
-    print("dispose");
   }
 
   @override
@@ -53,10 +52,43 @@ class _SellerScreenState extends State<SellerScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(maintitle),
+        actions: [
+          PopupMenuButton(
+              // add icon, by default "3 dot" icon
+              // icon: Icon(Icons.book)
+              itemBuilder: (context) {
+            return [
+              const PopupMenuItem<int>(
+                value: 0,
+                child: Text("My Order"),
+              ),
+              const PopupMenuItem<int>(
+                value: 1,
+                child: Text("New"),
+              ),
+            ];
+          }, onSelected: (value) async {
+            if (value == 0) {
+              if (widget.user.id.toString() == "na") {
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text("Please login/register an account")));
+                return;
+              }
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (content) => SellerOrderScreen(
+                            user: widget.user,
+                          )));
+            } else if (value == 1) {
+            } else if (value == 2) {
+            }
+          }),
+        ],
       ),
       body: catchList.isEmpty
-          ? const Center(
-              child: Text("No Data"),
+          ? Center(
+              child: Text(status),
             )
           : Column(children: [
               Container(
@@ -64,7 +96,7 @@ class _SellerScreenState extends State<SellerScreen> {
                 color: Theme.of(context).colorScheme.primary,
                 alignment: Alignment.center,
                 child: Text(
-                  "Have Sell ${catchList.length} Items",
+                  "${catchList.length} Catches Found",
                   style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
@@ -146,6 +178,7 @@ class _SellerScreenState extends State<SellerScreen> {
     if (widget.user.id == "na") {
       setState(() {
         // titlecenter = "Unregistered User";
+        status = "Please register an account first";
       });
       return;
     }
@@ -162,7 +195,9 @@ class _SellerScreenState extends State<SellerScreen> {
           extractdata['catches'].forEach((v) {
             catchList.add(Catch.fromJson(v));
           });
-          print(catchList[0].catchName);
+        } else {
+          status = "Please register an account first";
+          setState(() {});
         }
         setState(() {});
       }
@@ -207,11 +242,11 @@ class _SellerScreenState extends State<SellerScreen> {
   }
 
   void deleteCatch(int index) {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_catch.php"), body: {
-      "userid": widget.user.id,
-      "catchid": catchList[index].catchId
-    }).then((response) {
-      print(response.body);
+    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_catch.php"),
+        body: {
+          "userid": widget.user.id,
+          "catchid": catchList[index].catchId
+        }).then((response) {
       //catchList.clear();
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);

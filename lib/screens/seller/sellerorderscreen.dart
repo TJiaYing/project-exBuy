@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../models/order.dart';
 import '../../models/user.dart';
 import '../../myconfig.dart';
-import 'sellerorderdetailscreen.dart';
+import 'sellerorderdetialscreen.dart';
 
 class SellerOrderScreen extends StatefulWidget {
   final User user;

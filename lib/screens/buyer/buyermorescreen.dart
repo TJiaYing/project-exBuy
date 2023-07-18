@@ -47,17 +47,17 @@ class _BuyerMoreScreenState extends State<BuyerMoreScreen> {
       appBar: AppBar(title: const Text("More from ")),
       body: Column(
         children: [
-          Container(
-              height: screenHeight / 5,
+          SizedBox(
+              height: screenHeight / 8,
               width: screenWidth,
               child: Card(
-                  child: user == "na"
+                  child: user.name == "na"
                       ? const Center(child: Text("Loading..."))
                       : Center(
                           child: Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              "Store Owner\n" + user.name.toString(),
+                              "Store Owner\n${user.name}",
                               style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.bold),
                             ),
@@ -118,7 +118,8 @@ class _BuyerMoreScreenState extends State<BuyerMoreScreen> {
   }
 
   void loadSellerItems() {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/load_singleseller.php"),
+    http.post(
+        Uri.parse("${MyConfig().SERVER}/php/load_singleseller.php"),
         body: {
           "sellerid": widget.usercatch.userId,
         }).then((response) {
@@ -139,9 +140,10 @@ class _BuyerMoreScreenState extends State<BuyerMoreScreen> {
   }
 
   void loadSeller() {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/load_user.php"), body: {
-      "userid": widget.user.id,
-    }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/load_user.php"),
+        body: {
+          "userid": widget.usercatch.userId,
+        }).then((response) {
       log(response.body);
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
