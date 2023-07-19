@@ -1,3 +1,3 @@
 class MyConfig {
-  String SERVER = "http://10.19.24.116/exbuydb";
+  String SERVER = "https://jiaying.infinityfreeapp.com/exbuydb";
 }

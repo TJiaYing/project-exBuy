@@ -13,7 +13,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/user.dart';
 import '../myconfig.dart';
-import 'buyer/buyerscreen.dart';
 import 'loginscreen.dart';
 import 'registrationscreen.dart';
 
@@ -848,7 +847,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
-                        builder: (content) => BuyerScreen(user: user)));
+                        builder: (content) => const LoginScreen()));
               },
             ),
             TextButton(

@@ -194,7 +194,7 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           title: const Text(
-            "What item you want to barter with?",
+            "What item you want to barter with? Every barter will charge RM2",
             style: TextStyle(),
           ),
           content: TextFormField(

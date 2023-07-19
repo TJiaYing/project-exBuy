@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 
 import '../../models/order.dart';
@@ -38,7 +39,7 @@ class _BuyerOrderScreenState extends State<BuyerOrderScreen> {
             ? Container()
             : Column(
                 children: [
-                  Container(
+                  SizedBox(
                     width: screenWidth,
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(16, 8, 8, 8),
@@ -66,18 +67,16 @@ class _BuyerOrderScreenState extends State<BuyerOrderScreen> {
                               )),
                           Expanded(
                             flex: 3,
-                            child: Container(
-                              child: Row(children: [
-                                IconButton(
-                                  icon: const Icon(Icons.notifications),
-                                  onPressed: () {},
-                                ),
-                                IconButton(
-                                  icon: const Icon(Icons.search),
-                                  onPressed: () {},
-                                ),
-                              ]),
-                            ),
+                            child: Row(children: [
+                              IconButton(
+                                icon: const Icon(Icons.notifications),
+                                onPressed: () {},
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.search),
+                                onPressed: () {},
+                              ),
+                            ]),
                           )
                         ],
                       ),
@@ -99,7 +98,7 @@ class _BuyerOrderScreenState extends State<BuyerOrderScreen> {
                                             BuyerOrderDetailsScreen(
                                               order: myorder,
                                             )));
-                                // loadsellerorders();
+                                loadsellerorders();
                               },
                               leading: CircleAvatar(
                                   child: Text((index + 1).toString())),
@@ -145,21 +144,29 @@ class _BuyerOrderScreenState extends State<BuyerOrderScreen> {
   //                               Text(orderList[index].orderPaid.toString()),
 
   void loadsellerorders() {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/load_sellerorder.php"),
-        body: {"sellerid": widget.user.id}).then((response) {
+    http.post(
+        Uri.parse("${MyConfig().SERVER}/php/load_buyerorder.php"),
+        body: {"buyerid": widget.user.id}).then((response) {
       log(response.body);
       //orderList.clear();
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         if (jsondata['status'] == "success") {
+          orderList.clear();
           var extractdata = jsondata['data'];
           extractdata['orders'].forEach((v) {
             orderList.add(Order.fromJson(v));
           });
-          // print(orderList[0].catchName);
         } else {
           status = "Please register an account first";
           setState(() {});
+          Navigator.of(context).pop();
+          Fluttertoast.showToast(
+              msg: "No order found",
+              toastLength: Toast.LENGTH_SHORT,
+              gravity: ToastGravity.CENTER,
+              timeInSecForIosWeb: 1,
+              fontSize: 16.0);
         }
         setState(() {});
       }

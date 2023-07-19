@@ -34,7 +34,7 @@ class _BillScreenState extends State<BillScreen> {
         body: Center(
           child: WebView(
             initialUrl:
-                'http://10.19.24.116/exbuydb/php/payment.php?sellerid=${widget.user.id}&userid=${widget.user.id}&email=${widget.user.email}&phone=${widget.user.phone}&name=${widget.user.name}&amount=${widget.totalprice}',
+                'http://jiaying.infinityfreeapp.com/exbuydb/php/payment.php?sellerid=${widget.user.id}&userid=${widget.user.id}&email=${widget.user.email}&phone=${widget.user.phone}&name=${widget.user.name}&amount=${widget.totalprice}',
             javascriptMode: JavascriptMode.unrestricted,
             onWebViewCreated: (WebViewController webViewController) {
               _controller.complete(webViewController);
