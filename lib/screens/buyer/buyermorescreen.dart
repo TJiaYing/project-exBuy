@@ -118,8 +118,7 @@ class _BuyerMoreScreenState extends State<BuyerMoreScreen> {
   }
 
   void loadSellerItems() {
-    http.post(
-        Uri.parse("${MyConfig().SERVER}/php/load_singleseller.php"),
+    http.post(Uri.parse("${MyConfig().SERVER}/php/load_singleseller.php"),
         body: {
           "sellerid": widget.usercatch.userId,
         }).then((response) {
@@ -140,10 +139,9 @@ class _BuyerMoreScreenState extends State<BuyerMoreScreen> {
   }
 
   void loadSeller() {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/load_user.php"),
-        body: {
-          "userid": widget.usercatch.userId,
-        }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/load_user.php"), body: {
+      "userid": widget.usercatch.userId,
+    }).then((response) {
       log(response.body);
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);

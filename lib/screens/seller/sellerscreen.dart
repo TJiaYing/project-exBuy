@@ -81,8 +81,7 @@ class _SellerScreenState extends State<SellerScreen> {
                             user: widget.user,
                           )));
             } else if (value == 1) {
-            } else if (value == 2) {
-            }
+            } else if (value == 2) {}
           }),
         ],
       ),
@@ -96,7 +95,7 @@ class _SellerScreenState extends State<SellerScreen> {
                 color: Theme.of(context).colorScheme.primary,
                 alignment: Alignment.center,
                 child: Text(
-                  "${catchList.length} Catches Found",
+                  "${catchList.length} item found",
                   style: const TextStyle(color: Colors.white, fontSize: 18),
                 ),
               ),
@@ -242,11 +241,10 @@ class _SellerScreenState extends State<SellerScreen> {
   }
 
   void deleteCatch(int index) {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_catch.php"),
-        body: {
-          "userid": widget.user.id,
-          "catchid": catchList[index].catchId
-        }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_catch.php"), body: {
+      "userid": widget.user.id,
+      "catchid": catchList[index].catchId
+    }).then((response) {
       //catchList.clear();
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);

@@ -64,53 +64,53 @@ class _BuyerScreenState extends State<BuyerScreen> {
               },
               icon: const Icon(Icons.search)),
           IconButton(
-  onPressed: () {
-    if (cartqty > 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => BuyerCartScreen(
-            user: widget.user,
+            onPressed: () {
+              if (cartqty > 0) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BuyerCartScreen(
+                      user: widget.user,
+                    ),
+                  ),
+                );
+                loadCatches();
+              } else {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("No item in cart")),
+                );
+              }
+            },
+            icon: Stack(
+              children: [
+                const Icon(Icons.shopping_cart_checkout_outlined),
+                if (cartqty > 0)
+                  Positioned(
+                    top: 0,
+                    right: 0,
+                    child: Container(
+                      padding: const EdgeInsets.all(2),
+                      decoration: BoxDecoration(
+                        color: Colors.pinkAccent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      constraints: const BoxConstraints(
+                        minWidth: 16,
+                        minHeight: 16,
+                      ),
+                      child: Text(
+                        cartqty.toString(),
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 10,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
-        ),
-      );
-      loadCatches();
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("No item in cart")),
-      );
-    }
-  },
-  icon: Stack(
-    children: [
-      const Icon(Icons.shopping_cart_checkout_outlined),
-      if (cartqty > 0)
-        Positioned(
-          top: 0,
-          right: 0,
-          child: Container(
-            padding: const EdgeInsets.all(2),
-            decoration: BoxDecoration(
-              color: Colors.pinkAccent,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            constraints: const BoxConstraints(
-              minWidth: 16,
-              minHeight: 16,
-            ),
-            child: Text(
-              cartqty.toString(),
-              style: const TextStyle(
-                color: Colors.white,
-                fontSize: 10,
-              ),
-              textAlign: TextAlign.center,
-            ),
-          ),
-        ),
-    ],
-  ),
-),
           PopupMenuButton(
               // add icon, by default "3 dot" icon
               // icon: Icon(Icons.book)

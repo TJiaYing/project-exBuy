@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import '../../models/order.dart';
 import '../../models/user.dart';
 import '../../myconfig.dart';
-import 'buyerorderdetialscreen.dart';
+import 'buyerorderdetailscreen.dart';
 
 class BuyerOrderScreen extends StatefulWidget {
   final User user;
@@ -144,8 +144,7 @@ class _BuyerOrderScreenState extends State<BuyerOrderScreen> {
   //                               Text(orderList[index].orderPaid.toString()),
 
   void loadsellerorders() {
-    http.post(
-        Uri.parse("${MyConfig().SERVER}/php/load_buyerorder.php"),
+    http.post(Uri.parse("${MyConfig().SERVER}/php/load_buyerorder.php"),
         body: {"buyerid": widget.user.id}).then((response) {
       log(response.body);
       //orderList.clear();

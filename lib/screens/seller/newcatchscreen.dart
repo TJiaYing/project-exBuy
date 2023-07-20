@@ -21,7 +21,7 @@ class NewCatchScreen extends StatefulWidget {
 
 class _NewCatchScreenState extends State<NewCatchScreen> {
   File? _image;
-  var pathAsset = "assets/images/camera.png";
+  var pathAsset = "assets/images/camera.jpg";
   final _formKey = GlobalKey<FormState>();
   late double screenHeight, screenWidth, cardwitdh;
   final TextEditingController _catchnameEditingController =

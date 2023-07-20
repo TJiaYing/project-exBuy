@@ -194,27 +194,9 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(10.0))),
           title: const Text(
-            "What item you want to barter with? Every barter will charge RM2",
+            "Every barter will charge RM2",
             style: TextStyle(),
           ),
-          content: TextFormField(
-                        textInputAction: TextInputAction.next,
-                        validator: (val) => val!.isEmpty
-                            ? "Item description must be longer than 10"
-                            : null,
-                        onFieldSubmitted: (v) {},
-                        maxLines: 2,
-                        keyboardType: TextInputType.text,
-                        decoration: const InputDecoration(
-                            labelText: 'Item',
-                            alignLabelWithHint: true,
-                            labelStyle: TextStyle(),
-                            icon: Icon(
-                              Icons.description,
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(width: 2.0),
-                            ))),
           actions: <Widget>[
             TextButton(
               child: const Text(
@@ -223,12 +205,12 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
               ),
               onPressed: () {
                 Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (content) => BillScreen(
-                                        user: widget.user,
-                                        totalprice: totalprice,
-                                      )));
+                    context,
+                    MaterialPageRoute(
+                        builder: (content) => BillScreen(
+                              user: widget.user,
+                              totalprice: totalprice,
+                            )));
                 loadcart();
                 //registerUser();
               },
@@ -249,10 +231,9 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
   }
 
   void loadcart() {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/load_cart.php"),
-        body: {
-          "userid": widget.user.id,
-        }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/load_cart.php"), body: {
+      "userid": widget.user.id,
+    }).then((response) {
       // log(response.body);
       cartList.clear();
       if (response.statusCode == 200) {
@@ -320,10 +301,9 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
   }
 
   void deleteCart(int index) {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_cart.php"),
-        body: {
-          "cartid": cartList[index].cartId,
-        }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/delete_cart.php"), body: {
+      "cartid": cartList[index].cartId,
+    }).then((response) {
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         if (jsondata['status'] == 'success') {
@@ -342,12 +322,11 @@ class _BuyerCartScreenState extends State<BuyerCartScreen> {
   }
 
   void updateCart(int index, int newqty, double newprice) {
-    http.post(Uri.parse("${MyConfig().SERVER}/php/update_cart.php"),
-        body: {
-          "cartid": cartList[index].cartId,
-          "newqty": newqty.toString(),
-          "newprice": newprice.toString()
-        }).then((response) {
+    http.post(Uri.parse("${MyConfig().SERVER}/php/update_cart.php"), body: {
+      "cartid": cartList[index].cartId,
+      "newqty": newqty.toString(),
+      "newprice": newprice.toString()
+    }).then((response) {
       if (response.statusCode == 200) {
         var jsondata = jsonDecode(response.body);
         if (jsondata['status'] == 'success') {
