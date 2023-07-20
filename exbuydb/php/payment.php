@@ -20,8 +20,8 @@ $data = array(
           'name' => $name,
           'amount' => 200, // RM2
       'description' => 'Payment for order by '.$name,
-          'callback_url' => "http://jiaying.infinityfreeapp.com/exbuydb/return_url",
-          'redirect_url' => "http://jiaying.infinityfreeapp.com/exbuydb/php/payment_update.php?userid=$userid&email=$email&phone=$phone&amount=$amount&name=$name" 
+          'callback_url' => "http://jennpersonal.berhad.com.my/public_html/exbuydb/return_url",
+          'redirect_url' => "http://jennpersonal.berhad.com.my/public_html/exbuydb/php/payment_update.php?userid=$userid&email=$email&phone=$phone&amount=$amount&name=$name" 
 );
 
 $process = curl_init($host );
